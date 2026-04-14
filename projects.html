@@ -370,6 +370,146 @@
         <div class="project-arrow">→</div>
       </div>
 
+      <div class="project-card" style="animation-delay:0.35s">
+        <div>
+          <p class="project-year">2024</p>
+          <h3>Graph Search Algorithms – LLE (INFO-F-311 · Projet 1)</h3>
+          <p>
+            Implemented BFS, DFS and A* search algorithms to navigate the Laser Learning Environment (LLE),
+            a grid-based multi-agent world where agents collect gems and reach exit tiles while avoiding coloured lasers.
+            Modelled three progressively complex search problems: ExitProblem (reach exit alive),
+            GemProblem (collect all gems then exit), and CornerProblem (visit all four corners then exit) —
+            the latter requiring a custom CornerState class to track visited corners.
+            Designed Manhattan distance heuristics for ExitProblem and admissible heuristics for GemProblem and CornerProblem.
+            Built 4 custom LLE maps and produced a comparative experimental report measuring path length,
+            average execution time (with standard deviation over repeated runs), and number of visited nodes
+            across all three algorithms, visualised with Matplotlib.
+          </p>
+          <div class="project-tech">
+            <span class="tag">Python</span>
+            <span class="tag">BFS / DFS / A*</span>
+            <span class="tag">Heuristics</span>
+            <span class="tag">State-Space Search</span>
+            <span class="tag">Matplotlib</span>
+            <span class="tag">pytest</span>
+          </div>
+        </div>
+        <div class="project-arrow">→</div>
+      </div>
+
+      <div class="project-card" style="animation-delay:0.4s">
+        <div>
+          <p class="project-year">2024</p>
+          <h3>Adversarial Search in LLE (INFO-F-311 · Projet 2)</h3>
+          <p>
+            Extended LLE into a competitive two-agent, turn-based game where agents earn points
+            by collecting gems (+1) or reaching an exit (+1), and lose all points by dying.
+            Implemented Minimax, Alpha-Beta Pruning, and Expectimax (modelling a probabilistic opponent),
+            then ran experiments on 3 custom maps at search depths 1–10.
+            Key finding: Alpha-Beta consistently dominated all maps — matching Minimax scores while
+            exploring significantly fewer nodes thanks to pruning. Expectimax underperformed against
+            random agents due to its probabilistic assumptions not fitting the deterministic environment.
+            When pitting algorithms against each other, Alpha-Beta ranked first, Minimax second,
+            and Expectimax showed the most variability across configurations.
+          </p>
+          <div class="project-tech">
+            <span class="tag">Python</span>
+            <span class="tag">Minimax</span>
+            <span class="tag">Alpha-Beta Pruning</span>
+            <span class="tag">Expectimax</span>
+            <span class="tag">Game Theory</span>
+            <span class="tag">Matplotlib</span>
+          </div>
+        </div>
+        <div class="project-arrow">→</div>
+      </div>
+
+      <div class="project-card" style="animation-delay:0.45s">
+        <div>
+          <p class="project-year">2024</p>
+          <h3>Gem Localization via Bayesian Networks (INFO-F-311 · Projet 3)</h3>
+          <p>
+            Built a Bayesian network to localize m hidden gems in an n×n grid using a noisy sonar
+            (Gaussian noise N(0, 1/2)). Implemented the likelihood function 2^(−d) and an
+            inference-by-enumeration strategy to update gem position beliefs after each agent move,
+            with real-time belief heatmap rendering.
+            Proved and verified experimentally a complexity of O(n^(2m)):
+            on a 10×10 grid, inference time jumped from 0.0003s (1 gem) to 4.625s (3 gems),
+            confirming exponential growth. Tested on grid sizes n = 5, 10, 15 and m = 1, 2, 3.
+            Proposed two optimisations: search space reduction via proximity heuristics and confidence windows,
+            and Bayesian pruning by discarding low-likelihood configurations below a threshold.
+          </p>
+          <div class="project-tech">
+            <span class="tag">Python</span>
+            <span class="tag">Bayesian Networks</span>
+            <span class="tag">Probabilistic Inference</span>
+            <span class="tag">Complexity Analysis</span>
+            <span class="tag">Numpy</span>
+            <span class="tag">Matplotlib</span>
+          </div>
+        </div>
+        <div class="project-arrow">→</div>
+      </div>
+
+      <div class="project-card" style="animation-delay:0.5s">
+        <div>
+          <p class="project-year">2024</p>
+          <h3>Maze Solving with Reinforcement Learning (INFO-F-311 · Projet 4)</h3>
+          <p>
+            Trained agents to escape a stochastic maze with two exits: top (+10) and bottom-left (+100),
+            with a step penalty of −1 and a random teleportation probability p=0.1.
+            Implemented Value Iteration (γ≈0.99) and tracked convergence via heatmaps at iterations 10, 20, 30 and 40 —
+            values stabilised by iteration 40, with highest-value cells clustering near the rewarding exits.
+            For Q-Learning, compared ε-greedy (ε = 0.2, 0.1, 0.01, linear decay 1→0.01) and exploration bonus
+            (c = 1, 10, 100, 1000) strategies over 20 runs of 10,000 steps each.
+            Key findings: ε=0.01 converged fastest but risked premature exploitation;
+            linear decay provided the most stable progression. For exploration bonus,
+            c=10 gave the best score increase while c=1000 caused instability.
+            All results visualised with score curves and logarithmic-scale state-visit heatmaps.
+          </p>
+          <div class="project-tech">
+            <span class="tag">Python</span>
+            <span class="tag">Q-Learning</span>
+            <span class="tag">Value Iteration</span>
+            <span class="tag">ε-greedy / Exploration Bonus</span>
+            <span class="tag">Bellman Equation</span>
+            <span class="tag">Numpy</span>
+            <span class="tag">Seaborn</span>
+          </div>
+        </div>
+        <div class="project-arrow">→</div>
+      </div>
+
+      <div class="project-card" style="animation-delay:0.55s">
+        <div>
+          <p class="project-year">2024</p>
+          <h3>Handwritten Digit Auto-encoder – MNIST (INFO-F-311 · Projet 5)</h3>
+          <p>
+            Implemented a 4-layer auto-encoder from scratch using only NumPy to compress and reconstruct
+            MNIST digits (60,000 train / 10,000 test, 28×28 px, normalised to [0,1]).
+            Implemented forward pass, MSE loss and full backpropagation manually.
+            Ablation study on encoded vector size: MSE dropped from 0.0303 (dim=2) to 0.00873 (dim=16),
+            0.00588 (dim=32), and 0.00419 (dim=64) — concluding that dim=32 offers the best quality/compression trade-off.
+            Learning rate study: μ=0.001 gave stable but slow convergence (Loss=0.0556);
+            μ=0.01 was optimal (Loss=0.0131); μ=0.1 caused oscillations (Loss=0.0172).
+            Epochs study: reconstruction improved significantly from 5 to 10 epochs (MSE: 0.0094→0.0059),
+            with diminishing returns beyond 20. Explored hallucinations by decoding random latent vectors —
+            outputs captured MNIST-like shapes but lacked visual coherence.
+            Proposed improvements: convolutional layers and L2/Dropout regularisation.
+          </p>
+          <div class="project-tech">
+            <span class="tag">Python</span>
+            <span class="tag">Neural Networks</span>
+            <span class="tag">Auto-encoder</span>
+            <span class="tag">Backpropagation</span>
+            <span class="tag">MSE Loss</span>
+            <span class="tag">MNIST</span>
+            <span class="tag">Numpy</span>
+          </div>
+        </div>
+        <div class="project-arrow">→</div>
+      </div>
+
     </div>
   </div>
 
