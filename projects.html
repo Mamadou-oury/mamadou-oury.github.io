@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects – Mamadou Oury Diallo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #080c14;
+      --surface: #0e1420;
+      --accent: #00e8c6;
+      --accent2: #3d7fff;
+      --text: #e8edf5;
+      --muted: #6b7a96;
+      --border: rgba(0,232,198,0.15);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Syne', sans-serif; overflow-x: hidden; }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0; opacity: 0.4;
+    }
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: linear-gradient(rgba(0,232,198,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,232,198,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none; z-index: 0;
+    }
+
+    .blob { position: fixed; border-radius: 50%; filter: blur(120px); pointer-events: none; z-index: 0; opacity: 0.12; }
+    .blob-1 { width: 500px; height: 500px; background: var(--accent); top: -150px; right: -100px; }
+    .blob-2 { width: 400px; height: 400px; background: var(--accent2); bottom: 100px; left: -100px; }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1.2rem 3rem;
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(8,12,20,0.8); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: var(--accent); }
+    .nav-logo span { color: var(--muted); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+
+    main {
+      position: relative; z-index: 1;
+      max-width: 1000px; margin: 0 auto;
+      padding: 8rem 2rem 6rem;
+    }
+
+    .page-header { margin-bottom: 4rem; }
+    .section-label {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+      color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase;
+      margin-bottom: 1rem;
+      opacity: 0; animation: fadeUp 0.6s forwards;
+    }
+    .page-header h1 {
+      font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; line-height: 1.1;
+      margin-bottom: 1rem;
+      opacity: 0; animation: fadeUp 0.6s 0.1s forwards;
+    }
+    .page-header p {
+      color: #9aa5ba; font-size: 1rem; line-height: 1.7;
+      opacity: 0; animation: fadeUp 0.6s 0.2s forwards;
+    }
+
+    .year-group { margin-bottom: 4rem; }
+    .year-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem; color: var(--accent);
+      letter-spacing: 0.15em; text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid var(--border);
+      opacity: 0; animation: fadeUp 0.5s forwards;
+    }
+
+    .projects-list { display: flex; flex-direction: column; gap: 1.2rem; }
+
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.8rem 2rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1rem;
+      align-items: start;
+      transition: border-color 0.2s, transform 0.2s;
+      opacity: 0; animation: fadeUp 0.5s forwards;
+    }
+    .project-card:hover { border-color: var(--accent); transform: translateX(6px); }
+
+    .project-year { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--accent); margin-bottom: 0.5rem; }
+    .project-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .project-card p { color: #9aa5ba; font-size: 0.88rem; line-height: 1.7; margin-bottom: 0.8rem; }
+    .project-tech { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .tag {
+      background: rgba(0,232,198,0.07); border: 1px solid rgba(0,232,198,0.12);
+      color: #9aa5ba; font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem; padding: 0.25rem 0.6rem; border-radius: 4px;
+    }
+    .project-arrow { color: var(--muted); font-size: 1.3rem; margin-top: 0.3rem; transition: color 0.2s; }
+    .project-card:hover .project-arrow { color: var(--accent); }
+
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      border: 1px solid var(--border); border-radius: 8px;
+      padding: 0.7rem 1.2rem; text-decoration: none;
+      color: var(--muted); font-size: 0.88rem;
+      transition: all 0.2s; margin-bottom: 3rem;
+    }
+    .back-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    footer {
+      position: relative; z-index: 1; text-align: center;
+      padding: 2rem; border-top: 1px solid var(--border);
+      font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--muted);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 640px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+
+<nav>
+  <div class="nav-logo"><span>~/</span>mamadou-oury</div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#skills">Skills</a></li>
+    <li><a href="index.html#projects">Master Projects</a></li>
+    <li><a href="projects.html" class="active">All Projects</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<main>
+
+  <a href="index.html" class="back-btn">← Back to portfolio</a>
+
+  <div class="page-header">
+    <p class="section-label">// Academic work</p>
+    <h1>Bachelor Projects</h1>
+    <p>All academic projects completed during my Bachelor's degree in Computer Science at ULB (2021–2025).</p>
+  </div>
+
+  <!-- BACHELOR 2 -->
+  <div class="year-group">
+    <p class="year-title">// Bachelor 2 · 2022 – 2024</p>
+    <div class="projects-list">
+
+      <div class="project-card" style="animation-delay:0.1s">
+        <div>
+          <p class="project-year">2023</p>
+          <h3>Pokémon Image Search – Edition Processus (OS Projet 1)</h3>
+          <p>
+            System programming project simulating a Pokémon identifier using perceptual hashing.
+            Concurrent image comparison with 2 child processes, inter-process communication via anonymous
+            pipes and shared memory, signal handling (SIGINT, SIGUSR1, SIGUSR2).
+          </p>
+          <div class="project-tech">
+            <span class="tag">C / C++</span>
+            <span class="tag">Bash</span>
+            <span class="tag">Makefile</span>
+            <span class="tag">Processes</span>
+            <span class="tag">IPC</span>
+          </div>
+        </div>
+        <div class="project-arrow">→</div>
+      </div>
+
+      <div class="project-card" style="animation-delay:0.15s">
+        <div>
+          <p class="project-year">2023</p>
+          <h3>Pokémon Image Search – Edition Threads & Réseau (OS Projet 2)</h3>
+          <p>
+            Extension of Projet 1 with a client/server architecture over TCP sockets. Multi-threaded server
+            (3 threads per client) with synchronization, signal handling in multithreaded context, and
+            image transfer over the network.
+          </p>
+          <div class="project-tech">
+            <span class="tag">C / C++</span>
+            <span class="tag">TCP Sockets</span>
+            <span class="tag">Threads</span>
+            <span class="tag">Makefile</span>
+          </div>
+        </div>
+        <div class="project-arrow">→</div>
+      </div>
+
+      <div class="project-card" style="animation-delay:0.2s">
+        <div>
+          <p class="project-year">2024</p>
+          <h3>Frogger – Jeu C++ (INFO-F-202)</h3>
+          <p>
+            Clone of the classic Frogger game with multiple levels, lives, score system, level editor,
+            and splash screen. Object-oriented architecture using the MVC design pattern.
+          </p>
+          <div class="project-tech">
+            <span class="tag">C++</span>
+            <span class="tag">FLTK</span>
+            <span class="tag">MVC</span>
+            <span class="tag">Makefile</span>
+          </div>
+        </div>
+        <div class="project-arrow">→</div>
+      </div>
+
+      <div class="project-card" style="animation-delay:0.25s">
+        <div>
+          <p class="project-year">2024</p>
+          <h3>Fiat Lux – Lighting Problem (Algorithmique 2)</h3>
+          <p>
+            Resolution of a constraint satisfaction problem on a grid of light bulbs and switches using
+            propositional satisfiability (SAT). Decision algorithm (can all bulbs be lit?) and optimization
+            algorithm (maximize the number of lit bulbs), with complexity analysis.
+          </p>
+          <div class="project-tech">
+            <span class="tag">Java</span>
+            <span class="tag">SAT Solving</span>
+            <span class="tag">CNF</span>
+            <span class="tag">Graph Theory</span>
+            <span class="tag">LaTeX</span>
+          </div>
+        </div>
+        <div class="project-arrow">→</div>
+      </div>
+
+      <div class="project-card" style="animation-delay:0.3s">
+        <div>
+          <p class="project-year">2024</p>
+          <h3>Internet Food DataBase – INFOH303</h3>
+          <p>
+            Full-stack database application for a restaurant rating platform (similar to TripAdvisor).
+            Entity-relationship modelling, relational translation, SQL DDL script, data import, complex
+            SQL queries (relational algebra + tuple calculus). Built in a group of 4.
+          </p>
+          <div class="project-tech">
+            <span class="tag">SQL</span>
+            <span class="tag">PostgreSQL</span>
+            <span class="tag">Python / Java</span>
+            <span class="tag">ER Modelling</span>
+          </div>
+        </div>
+        <div class="project-arrow">→</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BACHELOR 3 -->
+  <div class="year-group">
+    <p class="year-title" style="animation-delay:0.1s">// Bachelor 3 · 2024 – 2025</p>
+    <div class="projects-list">
+
+      <div class="project-card" style="animation-delay:0.1s">
+        <div>
+          <p class="project-year">2024</p>
+          <h3>Tetris Royale – Multiplayer Competitive Game (INFO-F-209)</h3>
+          <p>
+            Competitive multiplayer Tetris over LAN with 4 game modes (Endless, Classic, Duel, Royal
+            Competition). Dual interface: terminal and GUI. Full software engineering lifecycle including
+            SRD/UML documentation, network management, account system and friends list.
+          </p>
+          <div class="project-tech">
+            <span class="tag">C++</span>
+            <span class="tag">Qt Creator</span>
+            <span class="tag">LAN Networking</span>
+            <span class="tag">UML</span>
+          </div>
+        </div>
+        <div class="project-arrow">→</div>
+      </div>
+
+      <div class="project-card" style="animation-delay:0.15s">
+        <div>
+          <p class="project-year">2024</p>
+          <h3>Deezify – Java Music Player (Génie Logiciel)</h3>
+          <p>
+            Cross-platform Java music player built in a team. Features include playlist management,
+            playback queue, metadata editing, multilingual support (FR/EN/NL), and a full
+            software engineering lifecycle with Git.
+          </p>
+          <div class="project-tech">
+            <span class="tag">Java</span>
+            <span class="tag">Maven</span>
+            <span class="tag">Git</span>
+            <span class="tag">Windows / Linux / MacOS</span>
+          </div>
+        </div>
+        <div class="project-arrow">→</div>
+      </div>
+
+      <div class="project-card" style="animation-delay:0.2s">
+        <div>
+          <p class="project-year">2024</p>
+          <h3>Alcuin Number of a Graph (Informatique Fondamentale)</h3>
+          <p>
+            Computation of the Alcuin number of a graph via SAT solving. Modelled the shepherd
+            transport problem using propositional logic (CNF encoding), implemented an incremental
+            SAT-based algorithm to find the minimum boat capacity.
+          </p>
+          <div class="project-tech">
+            <span class="tag">Python</span>
+            <span class="tag">Python-SAT</span>
+            <span class="tag">Graph Theory</span>
+            <span class="tag">SAT / CNF</span>
+          </div>
+        </div>
+        <div class="project-arrow">→</div>
+      </div>
+
+      <div class="project-card" style="animation-delay:0.25s">
+        <div>
+          <p class="project-year">2024</p>
+          <h3>Ball Throw Simulation (Modélisation et Simulation)</h3>
+          <p>
+            Modelling and simulation of a bouncing ball in 2D using Newton's laws. Solved ODEs with
+            Scipy, analyzed trajectory variations, and found initial conditions for the ball to pass
+            through obstacles (plate hole + ground hole).
+          </p>
+          <div class="project-tech">
+            <span class="tag">Python</span>
+            <span class="tag">Scipy</span>
+            <span class="tag">Numpy</span>
+            <span class="tag">Matplotlib</span>
+            <span class="tag">Jupyter</span>
+          </div>
+        </div>
+        <div class="project-arrow">→</div>
+      </div>
+
+      <div class="project-card" style="animation-delay:0.3s">
+        <div>
+          <p class="project-year">2025</p>
+          <h3>Wavy Surface Motion Simulation (Analyse Numérique)</h3>
+          <p>
+            Numerical simulation of a body rolling on a wavy surface using explicit Euler method for
+            ODE resolution. Analysed three friction models, corrected energy conservation errors, and
+            validated the simulation against physical laws.
+          </p>
+          <div class="project-tech">
+            <span class="tag">MATLAB</span>
+            <span class="tag">Octave</span>
+            <span class="tag">Numerical Methods</span>
+            <span class="tag">ODEs</span>
+          </div>
+        </div>
+        <div class="project-arrow">→</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div style="text-align:center; margin-top:2rem;">
+    <a href="index.html#projects" class="back-btn">← Back to Master projects</a>
+  </div>
+
+</main>
+
+<footer>
+  © 2026 Mamadou Oury Diallo · Built with GitHub Pages
+</footer>
+
+</body>
+</html>
